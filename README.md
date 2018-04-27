@@ -40,6 +40,12 @@ Assuming you've added a swift file in your current directory with the name `infe
 docker run -v ${PWD}:/usr/src zachgray/swift-tensorflow swift -O /usr/src/inference.swift
 ```
 
+#### Run the Compiler:
+
+```bash
+docker run -v ${PWD}:/usr/src zachgray/swift-tensorflow swiftc -O /usr/src/inference.swift
+```
+
 ## License
 
 This project is [MIT Licensed](https://github.com/zachgrayio/swift-tensorflow/blob/master/LICENSE).
