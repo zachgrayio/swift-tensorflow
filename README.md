@@ -46,7 +46,11 @@ docker --rm run -v ${PWD}:/usr/src zachgray/swift-tensorflow:4.2 swift -O /usr/s
 docker run --rm -v ${PWD}:/usr/src zachgray/swift-tensorflow:4.2 swiftc -O /usr/src/inference.swift
 ```
 
-#### Package Manager Tutorial (advanced):
+## Run with Dependencies (advanced)
+
+Linking to external packages in the REPL requires a few additional steps, but it's possible if we make use of [SPM](https://swift.org/package-manager/) and a dynamic library.
+
+#### Package Manager Tutorial:
 
 For the sake of simplicity we'll run all of these commands in interactive mode from within the Docker container. Keep in mind that since we've mounted the current directory as a container volume which we're working in, changes here will be reflected in your host filesystem.
 
