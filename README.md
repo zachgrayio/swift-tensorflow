@@ -48,7 +48,7 @@ docker run --rm -v ${PWD}:/usr/src zachgray/swift-tensorflow:4.2 swiftc -O /usr/
 
 ## Run with Dependencies (advanced)
 
-Linking to external packages in the REPL requires a few additional steps, but it's possible if we make use of [SPM](https://swift.org/package-manager/) and a dynamic library.
+Importing third-party packages in the REPL requires a few additional steps, but it's possible if we make use of [SPM](https://swift.org/package-manager/) and a dynamic library.
 
 #### Package Manager Tutorial:
 
@@ -70,7 +70,7 @@ cd TFExample
 swift package init --type library
 ```
 
-3: Add some dependencies to `Package.swift`, and make the library dynamic so we can import it and it's dependencies. Here's an example:
+3: Add some third-party dependencies to `Package.swift`, and make the library dynamic so we can import it and it's dependencies. Here's an example:
 
 ```swift
 // swift-tools-version:4.0
