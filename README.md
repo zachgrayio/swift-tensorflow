@@ -48,10 +48,16 @@ docker run --rm -v ${PWD}:/usr/src zachgray/swift-tensorflow:4.2 swiftc -O /usr/
 
 #### Package Manager Tutorial (advanced):
 
-Note: you could optionally connect to the container and run /bin/bash with `-it` and run these commands directly, but we'll run them individually from outside the container for uniformity with the other examples.
+For the sake of simplicity we'll run all of these commands in interactive mode from within the Docker container. Keep in mind that since we've mounted the current directory as a container volume which we're working in, changes here will be reflected in your host filesystem.
+
+Note: if you wanted to run these commands from outside of the container, as we did the previous examples, you'd simple include the following before each `swift` binary interaction: `docker run --rm -v ${PWD}:/usr/src zachgray/swift-tensorflow:4.2`.
 
 ```bash
-mkdir example-package && docker run --rm -v ${PWD}:/usr/src zachgray/swift-tensorflow:4.2 swift package --package-path example init --type library
+docker run --rm -it -v ${PWD}:/usr/src zachgray/swift-tensorflow:4.2 /bin/bash
+```
+
+```bash
+mkdir example && swift package --package-path example init --type library
 ```
 
 Add some dependencies to `Package.swift`, and make the library dynamic so we can import it and it's dependencies. Here's an example:
@@ -87,16 +93,22 @@ let package = Package(
 Now fetch package dependencies:
 
 ```bash
-docker run --rm -v ${PWD}:/usr/src zachgray/swift-tensorflow:4.2 swift package --package-path example update
+swift package --package-path example update
 ```
 
 And build the package with:
 
 ```bash
-docker run --rm -v ${PWD}:/usr/src zachgray/swift-tensorflow:4.2 swift build --package-path example
+swift build --package-path example
 ```
 
-Once the build is complete, we can fire up the REPL again but this time link to our built package:
+Once the build is complete, we will exit our interactive session:
+
+```
+exit
+```
+
+Now fire up the REPL again but this time link to the built package:
 
 ```bash
 docker run --rm --privileged --cap-add sys_ptrace -it -v ${PWD}:/usr/src zachgray/swift-tensorflow:4.2 swift -I /usr/src/example/.build/debug -L /usr/src/example/.build/debug -Lexample -I/usr/lib/swift/clang/include
