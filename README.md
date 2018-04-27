@@ -43,7 +43,7 @@ docker run -v ${PWD}:/usr/src zachgray/swift-tensorflow swift -O /usr/src/infere
 #### Run the Compiler:
 
 ```bash
-docker run -v ${PWD}:/usr/src zachgray/swift-tensorflow swiftc /usr/src/inference.swift
+docker run -v ${PWD}:/usr/src zachgray/swift-tensorflow swiftc -O /usr/src/inference.swift
 ```
 
 ## License
