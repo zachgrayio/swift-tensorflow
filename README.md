@@ -126,14 +126,19 @@ docker run --rm --privileged --cap-add sys_ptrace -it -v ${PWD}:/usr/src zachgra
 
 And now we can import our package dependencies in the REPL session like so:
 
-```bash
+```
 Welcome to Swift version 4.2-dev (LLVM 04bdb56f3d, Clang b44dbbdf44). Type :help for assistance.
   1> import TensorFlow
   2> import RxSwift
-  3> :exit
+  3>  _ = Observable.from([1,2]).subscribe(onNext: { print($0) })
+1
+2
+  4> var x = Tensor([[1, 2], [3, 4]])
+2018-04-27 17:13:12.514107: I tensorflow/core/platform/cpu_feature_guard.cc:140] Your CPU supports instructions that this TensorFlow binary was not compiled to use: SSE4.1 SSE4.2 AVX AVX2 FMA
+x: TensorFlow.Tensor<Double> = [[1.0, 2.0], [3.0, 4.0]]
 ```
 
-TODO: in the above run command, the use of `-lTFExample` is breaking TensorFlow (we can import it but it will crash when we attempt to invoke any methods). Need to figure out how to link against the TFExample library as well as tensorflow. 
+NOTE: the import order is currently important; importing other packages before TensorFlow will result in a runtime error in [swift-lldb](https://github.com/google/swift-lldb/blob/87c3a7891cf2e482c6908f7758c1fc06f531e4c3/source/Plugins/Language/Swift/SwiftFormatters.cpp#L564).
 
 ## License
 
