@@ -118,7 +118,7 @@ swift build
 exit
 ```
 
-7: Now fire up the REPL again but this time link to the built package:
+7: Now fire up the REPL in a similar manner to the examples above, but this time link to the built package:
 
 ```bash
 docker run --rm --privileged --cap-add sys_ptrace -it -v ${PWD}:/usr/src zachgray/swift-tensorflow:4.2 swift -I/usr/lib/swift/clang/include -I/usr/src/TFExample/.build/debug -L/usr/src/TFExample/.build/debug -lTFExample
