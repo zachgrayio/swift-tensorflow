@@ -35,3 +35,6 @@ RUN curl -fSsL $SWIFT_TF_URL -o swift-tensorflow.tar.gz \
     && tar xzf swift-tensorflow.tar.gz --directory /
 
 RUN swift --version
+
+RUN cd /usr/src
+WORKDIR /usr/src
