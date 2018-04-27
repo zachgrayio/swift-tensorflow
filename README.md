@@ -10,7 +10,7 @@ This image will allow you to easily take Swift for TensorFlow for a test drive w
 #### Run a REPL
 
 ```bash
-docker run  --privileged --cap-add sys_ptrace -it --rm zachgray/swift-tensorflow swift -I/usr/lib/swift/clang/include
+docker run  --privileged --cap-add sys_ptrace -it --rm zachgray/swift-tensorflow:4.2 swift -I/usr/lib/swift/clang/include
 ```
 
 and observe the output:
