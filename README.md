@@ -65,7 +65,9 @@ docker run --rm -it -v ${PWD}:/usr/src zachgray/swift-tensorflow:4.2 /bin/bash
 2: Create a library called `example`:
 
 ```bash
-mkdir example && swift package --package-path example init --type library
+mkdir TFExample 
+cd TFExample 
+swift package init --type library
 ```
 
 3: Add some dependencies to `Package.swift`, and make the library dynamic so we can import it and it's dependencies. Here's an example:
@@ -76,12 +78,12 @@ mkdir example && swift package --package-path example init --type library
 import PackageDescription
 
 let package = Package(
-    name: "example",
+    name: "TFExample",
     products: [
         .library(
-            name: "example",
+            name: "TFExample",
             type: .dynamic,    // allow use of this package and it's deps from the REPL
-            targets: ["example"]
+            targets: ["TFExample"]
         )
     ],
     dependencies: [
@@ -89,11 +91,11 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "example",
+            name: "TFExample",
             dependencies: ["RxSwift"]),
         .testTarget(
-            name: "exampleTests",
-            dependencies: ["example"]),
+            name: "TFExampleTests",
+            dependencies: ["TFExample"]),
     ]
 )
 ```
@@ -101,13 +103,13 @@ let package = Package(
 4: Now fetch package dependencies:
 
 ```bash
-swift package --package-path example update
+swift package update
 ```
 
 5: Build the package:
 
 ```bash
-swift build --package-path example
+swift build
 ```
 
 6: Once the build is complete, we will exit our interactive session:
@@ -119,7 +121,7 @@ exit
 7: Now fire up the REPL again but this time link to the built package:
 
 ```bash
-docker run --rm --privileged --cap-add sys_ptrace -it -v ${PWD}:/usr/src zachgray/swift-tensorflow:4.2 swift -I /usr/src/example/.build/debug -L /usr/src/example/.build/debug -Lexample -I/usr/lib/swift/clang/include
+docker run --rm --privileged --cap-add sys_ptrace -it -v ${PWD}:/usr/src zachgray/swift-tensorflow:4.2 swift -I/usr/lib/swift/clang/include -I/usr/src/TFExample/.build/debug -L/usr/src/TFExample/.build/debug -lTFExample
 ```
 
 And now we can import our package dependencies in the REPL session like so:
@@ -130,6 +132,8 @@ Welcome to Swift version 4.2-dev (LLVM 04bdb56f3d, Clang b44dbbdf44). Type :help
   2> import RxSwift
   3> :exit
 ```
+
+TODO: in the above run command, the use of `-lTFExample` is breaking TensorFlow (we can import it but it will crash when we attempt to invoke any methods). Need to figure out how to link against the TFExample library as well as tensorflow. 
 
 ## License
 
