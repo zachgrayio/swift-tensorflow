@@ -37,7 +37,7 @@ $R0: TensorFlow.Tensor<Double> = [[2.0, 4.0], [6.0, 8.0]]
 Assuming you've added a swift file ([like this one shown in the official docs](https://github.com/tensorflow/swift/blob/master/Usage.md#interpreter)) in your current directory with the name `inference.swift`:
 
 ```bash
-docker --rm run -v ${PWD}:/usr/src zachgray/swift-tensorflow:4.2 swift -O /usr/src/inference.swift
+docker run --rm -v ${PWD}:/usr/src zachgray/swift-tensorflow:4.2 swift -O /usr/src/inference.swift
 ```
 
 #### Run the Compiler:
