@@ -2,3 +2,5 @@
 .idea/
 run.sh
 build.sh
+inference.swift
+inference

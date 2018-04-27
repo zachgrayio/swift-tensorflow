@@ -2,3 +2,4 @@
 /.idea/
 run.sh
 build.sh
+inference
