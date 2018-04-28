@@ -9,13 +9,15 @@ This image will allow you to easily take the official [Swift for TensorFlow](htt
 ## Run
 #### Run a REPL
 
+Note: when running this interactive container with the standard `-it`, we also must [run without the default seccomp profile](https://docs.docker.com/engine/security/seccomp/) with `--security-opt seccomp:unconfined` to allow the Swift REPL access to `ptrace` and run correctly.
+
 ```bash
 docker run --rm --security-opt seccomp:unconfined -itv ${PWD}:/usr/src \
     zachgray/swift-tensorflow:4.2 \
     swift -I/usr/lib/swift/clang/include
 ```
 
-and observe the output:
+Observe the output:
 
 ```
 Welcome to Swift version 4.2-dev (LLVM 04bdb56f3d, Clang b44dbbdf44). Type :help for assistance.
@@ -33,8 +35,6 @@ x: TensorFlow.Tensor<Double> = [[1.0, 2.0], [3.0, 4.0]]
 $R0: TensorFlow.Tensor<Double> = [[2.0, 4.0], [6.0, 8.0]]
   4> :exit
 ```
-
-Note: when running this interactive container with the standard `-it`, we also must [run without the default seccomp profile](https://docs.docker.com/engine/security/seccomp/) with `--security-opt seccomp:unconfined` to allow the Swift REPL access to `ptrace` and run correctly.
 
 #### Run the Interpreter: 
 
