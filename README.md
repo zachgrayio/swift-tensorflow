@@ -1,6 +1,6 @@
 # swift-tensorflow
 
-Dockerized [Swift for TensorFlow](https://github.com/tensorflow/swift).
+Dockerized [Swift for TensorFlow](https://github.com/tensorflow/swift). This image is available now on Docker Hub at `zachgray/swift-tensorflow:4.2`.
 
 ## Overview
 
@@ -9,7 +9,9 @@ This image will allow you to easily take the official [Swift for TensorFlow](htt
 ## Run
 #### Run a REPL
 
-Note: when running this interactive container with the standard `-it`, we also must [run without the default seccomp profile](https://docs.docker.com/engine/security/seccomp/) with `--security-opt seccomp:unconfined` to allow the Swift REPL access to `ptrace` and run correctly.
+*Note: when running this interactive container with the standard `-it`, we also must [run without the default seccomp profile](https://docs.docker.com/engine/security/seccomp/) with `--security-opt seccomp:unconfined` to allow the Swift REPL access to `ptrace` and run correctly.*
+
+Run the `swift-tensorflow` container:
 
 ```bash
 docker run --rm --security-opt seccomp:unconfined -itv ${PWD}:/usr/src \
@@ -61,7 +63,7 @@ Importing third-party packages in the REPL requires a few additional steps, but 
 
 For the sake of simplicity we'll run all of these commands in interactive mode from within the Docker container. Keep in mind that since we've mounted the current directory as a container volume which we're working in, changes here will be reflected in your host filesystem.
 
-Note: if you wanted to run these commands from outside of the container, as we did the previous examples, you'd simple include the following before each `swift` binary interaction: `docker run --rm -v ${PWD}:/usr/src zachgray/swift-tensorflow:4.2`.
+*Note: if you wanted to run these commands from outside of the container, as we did the previous examples, you'd simple include the following before each `swift` binary interaction: `docker run --rm -v ${PWD}:/usr/src zachgray/swift-tensorflow:4.2`.*
 
 1: Start the interactive session:
 
@@ -158,7 +160,7 @@ x: Python.PyValue = [1, 'hello', 3.14]
   7> :exit
 ```
 
-NOTE: the Swift-related `-l` flags are currently necessary ([see discussion here](https://github.com/google/swift/issues/4)) but may eventually become redundant. Also, while they're relevant, the order in which the flags are passed matters! Be sure to link your dynamic library after the Swift libs.
+*Note: the Swift-related `-l` flags are currently necessary ([see discussion here](https://github.com/google/swift/issues/4)) but may eventually become redundant. Also, while they're relevant, the order in which the flags are passed matters! Be sure to link your dynamic library after the Swift libs.*
 
 ## License
 
