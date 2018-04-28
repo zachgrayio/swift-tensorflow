@@ -143,14 +143,17 @@ And now we can import our package dependencies in the REPL session like so:
 
 ```
 Welcome to Swift version 4.2-dev (LLVM 04bdb56f3d, Clang b44dbbdf44). Type :help for assistance.
-  1> import TensorFlow
-  2> import RxSwift
-  3>  _ = Observable.from([1,2]).subscribe(onNext: { print($0) })
+  1> import RxSwift
+  2> import Python
+  3> import TensorFlow
+  4> var x = Tensor([[1, 2], [3, 4]])
+x: TensorFlow.Tensor<Double> = [[1.0, 2.0], [3.0, 4.0]]
+  5> _ = Observable.from([1,2]).subscribe(onNext: { print($0) })
 1
 2
-  4> var x = Tensor([[1, 2], [3, 4]])
-2018-04-27 17:13:12.514107: I tensorflow/core/platform/cpu_feature_guard.cc:140] Your CPU supports instructions that this TensorFlow binary was not compiled to use: SSE4.1 SSE4.2 AVX AVX2 FMA
-x: TensorFlow.Tensor<Double> = [[1.0, 2.0], [3.0, 4.0]]
+  6> var x: PyValue = [1, "hello", 3.14]
+x: Python.PyValue = [1, 'hello', 3.14]
+  7> :exit
 ```
 
 NOTE: the Swift-related `-l` flags are currently necessary ([see discussion here](https://github.com/google/swift/issues/4)) but may eventually become redundant. Also, while they're relevant, the order in which the flags are passed matters! Be sure to link your dynamic library after the Swift libs.
