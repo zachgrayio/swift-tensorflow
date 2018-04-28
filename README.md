@@ -10,7 +10,7 @@ This image will allow you to easily take the official [Swift for TensorFlow](htt
 #### Run a REPL
 
 ```bash
-docker run --rm --privileged --cap-add sys_ptrace -itv ${PWD}:/usr/src \
+docker run --rm --security-opt seccomp:unconfined -itv ${PWD}:/usr/src \
     zachgray/swift-tensorflow:4.2 \
     swift -I/usr/lib/swift/clang/include
 ```
@@ -33,6 +33,8 @@ x: TensorFlow.Tensor<Double> = [[1.0, 2.0], [3.0, 4.0]]
 $R0: TensorFlow.Tensor<Double> = [[2.0, 4.0], [6.0, 8.0]]
   4> :exit
 ```
+
+Note: when running this interactive container with the standard `-it`, we also must [run without the default seccomp profile](https://docs.docker.com/engine/security/seccomp/) with `--security-opt seccomp:unconfined` to allow the Swift REPL access to `ptrace` and run correctly.
 
 #### Run the Interpreter: 
 
@@ -128,7 +130,7 @@ exit
 7: Now fire up the REPL in a similar manner to the examples above, but this time link to the built package:
 
 ```bash
-docker run --rm --privileged --cap-add sys_ptrace -itv ${PWD}:/usr/src \
+docker run --rm --security-opt seccomp:unconfined -itv ${PWD}:/usr/src \
     zachgray/swift-tensorflow:4.2 \
     swift \
     -I/usr/lib/swift/clang/include \
