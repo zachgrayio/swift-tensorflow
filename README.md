@@ -10,7 +10,9 @@ This image will allow you to easily take the official [Swift for TensorFlow](htt
 #### Run a REPL
 
 ```bash
-docker run  --privileged --cap-add sys_ptrace -it --rm zachgray/swift-tensorflow:4.2 swift -I/usr/lib/swift/clang/include
+docker run --rm --privileged --cap-add sys_ptrace -itv ${PWD}:/usr/src \
+    zachgray/swift-tensorflow:4.2 \
+    swift -I/usr/lib/swift/clang/include
 ```
 
 and observe the output:
@@ -37,13 +39,16 @@ $R0: TensorFlow.Tensor<Double> = [[2.0, 4.0], [6.0, 8.0]]
 Assuming you've added a swift file ([like this one shown in the official docs](https://github.com/tensorflow/swift/blob/master/Usage.md#interpreter)) in your current directory with the name `inference.swift`:
 
 ```bash
-docker run --rm -v ${PWD}:/usr/src zachgray/swift-tensorflow:4.2 swift -O /usr/src/inference.swift
+docker run --rm -v ${PWD}:/usr/src \
+    zachgray/swift-tensorflow:4.2 \
+    swift -O /usr/src/inference.swift
 ```
 
 #### Run the Compiler:
 
 ```bash
-docker run --rm -v ${PWD}:/usr/src zachgray/swift-tensorflow:4.2 swiftc -O /usr/src/inference.swift
+docker run --rm -v ${PWD}:/usr/src zachgray/swift-tensorflow:4.2 \
+    swiftc -O /usr/src/inference.swift
 ```
 
 ## Run with Dependencies (advanced)
@@ -59,7 +64,9 @@ Note: if you wanted to run these commands from outside of the container, as we d
 1: Start the interactive session:
 
 ```bash
-docker run --rm -it -v ${PWD}:/usr/src zachgray/swift-tensorflow:4.2 /bin/bash
+docker run --rm -itv ${PWD}:/usr/src \
+    zachgray/swift-tensorflow:4.2 \
+    /bin/bash
 ```
 
 2: Create a library called `example`:
@@ -121,7 +128,15 @@ exit
 7: Now fire up the REPL in a similar manner to the examples above, but this time link to the built package:
 
 ```bash
-docker run --rm --privileged --cap-add sys_ptrace -it -v ${PWD}:/usr/src zachgray/swift-tensorflow:4.2 swift -I/usr/lib/swift/clang/include -I/usr/src/TFExample/.build/debug -L/usr/src/TFExample/.build/debug -lTFExample
+docker run --rm --privileged --cap-add sys_ptrace -itv ${PWD}:/usr/src \
+    zachgray/swift-tensorflow:4.2 \
+    swift \
+    -I/usr/lib/swift/clang/include \
+    -I/usr/src/TFExample/.build/debug \
+    -L/usr/src/TFExample/.build/debug \
+    -lswiftPython \
+    -lswiftTensorFlow \
+    -lTFExample
 ```
 
 And now we can import our package dependencies in the REPL session like so:
@@ -138,7 +153,7 @@ Welcome to Swift version 4.2-dev (LLVM 04bdb56f3d, Clang b44dbbdf44). Type :help
 x: TensorFlow.Tensor<Double> = [[1.0, 2.0], [3.0, 4.0]]
 ```
 
-NOTE: the import order is currently important; importing other packages before TensorFlow will result in a runtime error in [swift-lldb](https://github.com/google/swift-lldb/blob/87c3a7891cf2e482c6908f7758c1fc06f531e4c3/source/Plugins/Language/Swift/SwiftFormatters.cpp#L564).
+NOTE: the Swift-related `-l` flags are currently necessary ([see discussion here](https://github.com/google/swift/issues/4)) but may eventually become redundant. Also, while they're relevant, the order in which the flags are passed matters! Be sure to link your dynamic library after the Swift libs.
 
 ## License
 
