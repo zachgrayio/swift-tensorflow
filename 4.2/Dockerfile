@@ -29,10 +29,14 @@ RUN apt-get -q update && \
 # Install Swift for TensorFlow:
 
 # Define SWIFT_TF_URL as an arg that can be passed by users if needed
-ARG SWIFT_TF_URL=https://storage.googleapis.com/swift-tensorflow/ubuntu16.04/swift-tensorflow-DEVELOPMENT-2018-04-26-a-ubuntu16.04.tar.gz
+ARG SWIFT_TF_URL=https://storage.googleapis.com/swift-tensorflow/ubuntu16.04/swift-tensorflow-DEVELOPMENT-2019-01-04-a-ubuntu16.04.tar.gz
 
 RUN curl -fSsL $SWIFT_TF_URL -o swift-tensorflow.tar.gz \
-    && tar xzf swift-tensorflow.tar.gz --directory /
+    && tar xzf swift-tensorflow.tar.gz --directory / \
+    && rm swift-tensorflow.tar.gz
+
+# Version DEVELOPMENT-2019-01-04 needs this fix
+RUN mv -n /usr/lib/libBlocksRuntime.so  /usr/lib/libBlocksRuntime.so.0 && ldconfig
 
 RUN swift --version
 
