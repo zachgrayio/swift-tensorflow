@@ -15,7 +15,8 @@ This image will allow you to easily take the official [Swift for TensorFlow](htt
 
 ```bash
 docker run --rm --security-opt seccomp:unconfined -itv ${PWD}:/usr/src \
-    zachgray/swift-tensorflow:4.2
+    zachgray/swift-tensorflow:4.2 \
+    swift
 ```
 
 #### Observe the output:
