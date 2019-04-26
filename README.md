@@ -16,31 +16,53 @@ This image will allow you to easily take the official [Swift for TensorFlow](htt
 ```bash
 docker run --rm --security-opt seccomp:unconfined -itv ${PWD}:/usr/src \
     zachgray/swift-tensorflow:4.2 \
-    swift -I/usr/lib/swift/clang/include
+    swift
 ```
 
 #### Observe the output:
 
 ```
-Welcome to Swift version 4.2-dev (LLVM 04bdb56f3d, Clang b44dbbdf44). Type :help for assistance.
-  1> 
+Welcome to Swift version 4.2-dev (LLVM fd66ce58db, Clang cca52e8396, Swift 280486afdc).
+Type :help for assistance.
+  1>
 ```
 
 #### Interact with TensorFlow:
 
 ```
   1> import TensorFlow
-  2> var x = Tensor([[1, 2], [3, 4]])
-2018-04-27 04:30:17.505272: I tensorflow/core/platform/cpu_feature_guard.cc:140] Your CPU supports instructions that this TensorFlow binary was not compiled to use: SSE4.1 SSE4.2 AVX AVX2 FMA
-x: TensorFlow.Tensor<Double> = [[1.0, 2.0], [3.0, 4.0]]
+  2> var x = Tensor<Float>([[1, 2], [3, 4]])
+x: TensorFlow.Tensor<Float> = [[1.0, 2.0], [3.0, 4.0]]
   3> x + x
-$R0: TensorFlow.Tensor<Double> = [[2.0, 4.0], [6.0, 8.0]]
+$R2: TensorFlow.Tensor<Float> = [[2.0, 4.0], [6.0, 8.0]]
   4> :exit
 ```
 
 ### Run the Interpreter
 
-Assuming you've added a swift file ([like this one shown in the official docs](https://github.com/tensorflow/swift/blob/master/Usage.md#interpreter)) in your current directory with the name `inference.swift`:
+Assuming you've added a swift file, like this one copied from [official docs](https://github.com/tensorflow/swift/blob/master/Usage.md#interpreter) in your current directory with the name `inference.swift`:
+
+```swift
+import TensorFlow
+
+struct MLPClassifier {
+    var w1 = Tensor<Float>(shape: [2, 4], repeating: 0.1)
+    var w2 = Tensor<Float>(shape: [4, 1], scalars: [0.4, -0.5, -0.5, 0.4])
+    var b1 = Tensor<Float>([0.2, -0.3, -0.3, 0.2])
+    var b2 = Tensor<Float>([[0.4]])
+
+    func prediction(for x: Tensor<Float>) -> Tensor<Float> {
+        let o1 = tanh(matmul(x, w1) + b1)
+        return tanh(matmul(o1, w2) + b2)
+    }
+}
+let input = Tensor<Float>([[0.2, 0.8]])
+let classifier = MLPClassifier()
+let prediction = classifier.prediction(for: input)
+print(prediction)
+```
+
+To use the interpreter:
 
 ```bash
 docker run --rm -v ${PWD}:/usr/src \
@@ -52,7 +74,7 @@ docker run --rm -v ${PWD}:/usr/src \
 
 ```bash
 docker run --rm -v ${PWD}:/usr/src zachgray/swift-tensorflow:4.2 \
-    swiftc -O /usr/src/inference.swift
+    swiftc -O /usr/src/inference.swift -ltensorflow 
 ```
 
 ## Run with Dependencies (advanced)
