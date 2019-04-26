@@ -1,6 +1,6 @@
 # swift-tensorflow
 
-Dockerized [Swift for TensorFlow](https://github.com/tensorflow/swift). This image is available now on Docker Hub at `zachgray/swift-tensorflow:4.2`.
+Dockerized [Swift for TensorFlow](https://github.com/tensorflow/swift). This image is available now on Docker Hub at `zachgray/swift-tensorflow:0.3`.
 
 ## Overview
 
@@ -15,14 +15,14 @@ This image will allow you to easily take the official [Swift for TensorFlow](htt
 
 ```bash
 docker run --rm --security-opt seccomp:unconfined -itv ${PWD}:/usr/src \
-    zachgray/swift-tensorflow:4.2 \
+    zachgray/swift-tensorflow:0.3 \
     swift
 ```
 
 #### Observe the output:
 
 ```
-Welcome to Swift version 4.2-dev (LLVM fd66ce58db, Clang cca52e8396, Swift 280486afdc).
+Welcome to Swift version 5.0-dev (LLVM dcb9eb74a7, Clang 95cdf7c9af, Swift 4c94878dd2).
 Type :help for assistance.
   1>
 ```
@@ -66,14 +66,14 @@ To use the interpreter:
 
 ```bash
 docker run --rm -v ${PWD}:/usr/src \
-    zachgray/swift-tensorflow:4.2 \
+    zachgray/swift-tensorflow:0.3 \
     swift -O /usr/src/inference.swift
 ```
 
 ### Run the Compiler
 
 ```bash
-docker run --rm -v ${PWD}:/usr/src zachgray/swift-tensorflow:4.2 \
+docker run --rm -v ${PWD}:/usr/src zachgray/swift-tensorflow:0.3 \
     swiftc -O /usr/src/inference.swift -ltensorflow 
 ```
 
@@ -85,13 +85,13 @@ Importing third-party packages in the REPL requires a few additional steps, but 
 
 For the sake of simplicity we'll run all of these commands in interactive mode from within the Docker container. Keep in mind that since we've mounted the current directory as a container volume which we're working in, changes here will be reflected in your host filesystem.
 
-*Note: if you wanted to run these commands from outside of the container, as we did the previous examples, you'd simple include the following before each `swift` binary interaction: `docker run --rm -v ${PWD}:/usr/src zachgray/swift-tensorflow:4.2`.*
+*Note: if you wanted to run these commands from outside of the container, as we did the previous examples, you'd simple include the following before each `swift` binary interaction: `docker run --rm -v ${PWD}:/usr/src zachgray/swift-tensorflow:0.3`.*
 
 #### 1) Start the interactive session:
 
 ```bash
 docker run --rm -itv ${PWD}:/usr/src \
-    zachgray/swift-tensorflow:4.2 \
+    zachgray/swift-tensorflow:0.3 \
     /bin/bash
 ```
 
@@ -157,7 +157,7 @@ Notice that we start the REPL in a similar manner to the examples above, but thi
 
 ```bash
 docker run --rm --security-opt seccomp:unconfined -itv ${PWD}:/usr/src \
-    zachgray/swift-tensorflow:4.2 \
+    zachgray/swift-tensorflow:0.3 \
     swift \
     -I/usr/lib/swift/clang/include \
     -I/usr/src/TFExample/.build/debug \
@@ -172,7 +172,8 @@ docker run --rm --security-opt seccomp:unconfined -itv ${PWD}:/usr/src \
 Now we can import dependences into the REPL session!
 
 ```
-Welcome to Swift version 4.2-dev (LLVM 04bdb56f3d, Clang b44dbbdf44). Type :help for assistance.
+Welcome to Swift version 5.0-dev (LLVM dcb9eb74a7, Clang 95cdf7c9af, Swift 4c94878dd2).
+Type :help for assistance.
   1> import RxSwift
   2> import Python
   3> import TensorFlow
